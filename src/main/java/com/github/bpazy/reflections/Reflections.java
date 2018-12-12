@@ -19,10 +19,26 @@ public class Reflections {
                 .collect(Collectors.toSet());
     }
 
+    public static Set<Field> getAllFields(Class clazz) {
+        Field[] declaredFields = clazz.getDeclaredFields();
+        return Stream.of(declaredFields)
+                .collect(Collectors.toSet());
+    }
+
     @SneakyThrows
-    public static void setField(Object instance, String fieldName, String value) {
+    public static void setField(Object instance, String fieldName, Object value) {
         Field field = instance.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(instance, value);
+    }
+
+    @SneakyThrows
+    public static void setField(Object instance, Field field, Object value) {
+        field.setAccessible(true);
+        field.set(instance, value);
+    }
+
+    public static <T extends Annotation> T getAnnotationByType(Class clazz, Class<T> annotation) {
+        return (T) clazz.getAnnotation(annotation);
     }
 }
