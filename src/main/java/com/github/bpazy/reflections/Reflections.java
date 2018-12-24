@@ -13,8 +13,7 @@ import java.util.stream.Stream;
  */
 public class Reflections {
     public static Set<Field> getAllFields(Class clazz, Class<? extends Annotation> type) {
-        Field[] declaredFields = clazz.getDeclaredFields();
-        return Stream.of(declaredFields)
+        return getAllFields(clazz).stream()
                 .filter(field -> field.isAnnotationPresent(type))
                 .collect(Collectors.toSet());
     }
@@ -28,8 +27,7 @@ public class Reflections {
     @SneakyThrows
     public static void setField(Object instance, String fieldName, Object value) {
         Field field = instance.getClass().getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(instance, value);
+        setField(instance, field, value);
     }
 
     @SneakyThrows
@@ -38,6 +36,7 @@ public class Reflections {
         field.set(instance, value);
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends Annotation> T getAnnotationByType(Class clazz, Class<T> annotation) {
         return (T) clazz.getAnnotation(annotation);
     }
