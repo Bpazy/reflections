@@ -12,13 +12,13 @@ import java.util.stream.Stream;
  * @author ziyuan
  */
 public class Reflections {
-    public static Set<Field> getAllFields(Class clazz, Class<? extends Annotation> type) {
-        return getAllFields(clazz).stream()
+    public static Set<Field> getAnnotatedFields(Class clazz, Class<? extends Annotation> type) {
+        return getFields(clazz).stream()
                 .filter(field -> field.isAnnotationPresent(type))
                 .collect(Collectors.toSet());
     }
 
-    public static Set<Field> getAllFields(Class clazz) {
+    public static Set<Field> getFields(Class clazz) {
         Field[] declaredFields = clazz.getDeclaredFields();
         return Stream.of(declaredFields)
                 .collect(Collectors.toSet());
@@ -37,7 +37,7 @@ public class Reflections {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Annotation> T getAnnotationByType(Class clazz, Class<T> annotation) {
+    public static <T extends Annotation> T getAnnotation(Class clazz, Class<T> annotation) {
         return (T) clazz.getAnnotation(annotation);
     }
 }
