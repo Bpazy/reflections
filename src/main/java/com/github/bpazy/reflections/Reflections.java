@@ -34,6 +34,7 @@ public class Reflections {
     public static Set<Field> getFields(Class clazz) {
         Field[] declaredFields = clazz.getDeclaredFields();
         return Stream.of(declaredFields)
+                .filter(field -> !field.isSynthetic())
                 .collect(Collectors.toSet());
     }
 
