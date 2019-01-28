@@ -10,29 +10,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author ziyuan
  */
-class ReflectionsTest {
+public class ReflectionsTest {
 
     @Test
-    void getAnnotatedFields() {
+    public void testGetAnnotatedFields() {
         Set<Field> annotatedFields = Reflections.getAnnotatedFields(TestBean.class, FieldAnnotation.class);
         annotatedFields.forEach(f -> assertEquals(f.getType(), String.class));
     }
 
     @Test
-    void getFields() {
+    public void testGetFields() {
         Set<Field> fields = Reflections.getFields(TestBean.class);
+        System.out.println(fields);
         assertEquals(fields.size(), 1);
     }
 
     @Test
-    void setFieldByFieldName() {
+    public void testSetFieldByFieldName() {
         TestBean bean = new TestBean();
         Reflections.setField(bean, "content", TestConstants.injectedValue);
         assertEquals(TestConstants.injectedValue, bean.getContent());
     }
 
     @Test
-    void setFieldByField() {
+    public void testSetFieldByField() {
         TestBean bean = new TestBean();
         Set<Field> annotatedFields = Reflections.getAnnotatedFields(TestBean.class, FieldAnnotation.class);
         for (Field field : annotatedFields) {
@@ -42,8 +43,8 @@ class ReflectionsTest {
     }
 
     @Test
-    void getAnnotation() {
+    public void testGetAnnotation() {
         ClassAnnotation fieldAnnotation = Reflections.getAnnotation(TestBean.class, ClassAnnotation.class);
-        assertEquals(fieldAnnotation.value(), "");
+        assertEquals(fieldAnnotation.value(), TestConstants.classAnnotationValue);
     }
 }
